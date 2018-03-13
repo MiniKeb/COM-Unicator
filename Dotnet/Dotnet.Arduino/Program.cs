@@ -1,33 +1,38 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
-using Dotnet.Arduino.SerialUsb;
+using Library.Serial;
 
 namespace Dotnet.Arduino
 {
     class Program
     {
+        //RRRRROOOOOYYYYYAAAAAGGGGGTTTTTCCCCCLLLLLBBBBBVVVVVFFFFFPPPPP
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-    
-            SerialInformation.GetPorts();
- 
-            var serialInformation = new SerialInformation();
-        
-            serialInformation.ReadFromPort();
+            Console.ReadLine();
 
-            var message = string.Empty;
-            while(message != "quit"){
-                Console.WriteLine("You : ");
-                message = Console.ReadLine();
-                serialInformation.Write(message);
-                Thread.Sleep(2000);
+            using (var serialInformation = new SerialInformation("COM4"))
+            {
+                var rand = new Random();
+                var current = 20;
+                for(var i = 0; i < 600; i++){
+                    var move = rand.Next(-2, 4);
+                    Console.Write(move + " : ");
+                    current += move;
+                    var msg = String.Concat(Enumerable.Range(0, 60).Select(x => x < current ? 'V' : 'X').ToList());
+                    Console.WriteLine(msg);
+                    serialInformation.Write(msg);
+                    Thread.Sleep(200);
+                }
+
+                // var colors = "ROYAGTCLBVFPW";
+
+
             }
-        
-            Console.WriteLine("[EXIT]");
-            Console.ReadKey();
-        
-            serialInformation.SerialPort.Close();
+            Console.WriteLine("Bye World!");
+            Console.ReadLine();
         }
     }
 }

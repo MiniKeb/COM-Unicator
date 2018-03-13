@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Dotnet.Arduino.SerialUsb\Dotnet.Arduino.SerialUsb.csproj" />
+    <ProjectReference Include="..\Library\Library.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
